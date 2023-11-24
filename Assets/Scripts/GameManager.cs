@@ -8,6 +8,17 @@ public class GameManager : Singleton<GameManager>
     public int memories = 0;
     public TMP_Text memoriesText;
 
+    [Header("Player")]
+    public SO_PlayerName soPlayerName;
+    [SerializeField] private TMP_InputField _uiInputField;
+    [SerializeField] private TextMeshProUGUI _uiTextPlayerNameInGamePlay;
+
+
+    private void Start()
+    {
+        getPlayerName();
+    }
+
     public void GetMemory()
     {
         memories++;
@@ -26,4 +37,16 @@ public class GameManager : Singleton<GameManager>
             Debug.Log("Fim de Jogo!");
         }
     }
+
+   public void setPlayerName()
+    {
+        soPlayerName.playerName = _uiInputField.text;
+    }
+
+    void getPlayerName()
+    {
+        if(_uiTextPlayerNameInGamePlay != null)
+        _uiTextPlayerNameInGamePlay.text = soPlayerName.playerName;
+    }
+
 }
