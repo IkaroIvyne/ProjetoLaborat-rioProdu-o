@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
+using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,7 +14,9 @@ public class Player : MonoBehaviour
     public Animator anim;
     public Transform player;
 
-    public List<Sprite> sprites;
+    public List<Sprite> idleSprites;
+    private Sprite _lastIdleSprite;
+    private int _lastIndexAnimation; // 0 - Down, 2 - Up , 4 - right and 6 - left
 
 
 
@@ -47,25 +50,42 @@ public class Player : MonoBehaviour
 
         if (vMovement > 0)
         {
-            _currentSprite.sprite = sprites[0];
+            _currentSprite.sprite = idleSprites[0];
+            _lastIdleSprite = idleSprites[0];
+            _lastIndexAnimation = 2;
+            anim.SetInteger("transition", 3);
             Debug.Log(vMovement);
         }
-         if (vMovement < 0)
+        else if (vMovement < 0)
         {
-            _currentSprite.sprite = sprites[1];
+            _currentSprite.sprite = idleSprites[1];
+            _lastIdleSprite = idleSprites[1];
+            _lastIndexAnimation = 0;
+            anim.SetInteger("transition", 1);
             Debug.Log(vMovement);
         }
-        if (hMovement < 0)
+        else if (hMovement < 0)
         {
-            _currentSprite.sprite = sprites[2];
+            _currentSprite.sprite = idleSprites[2];
+            _lastIdleSprite = idleSprites[2];
+            _lastIndexAnimation = 6;
+            anim.SetInteger("transition", 7);
             Debug.Log(hMovement);
 
         }
-         if (hMovement > 0)
+        else if (hMovement > 0)
         {
-            _currentSprite.sprite = sprites[3];
+            _currentSprite.sprite = idleSprites[3];
+            _lastIdleSprite = idleSprites[3];
+            _lastIndexAnimation = 4;
+            anim.SetInteger("transition", 5);
             Debug.Log(hMovement);
 
+        }
+        else
+        {
+            _currentSprite.sprite = _lastIdleSprite;
+            anim.SetInteger("transition", _lastIndexAnimation);
         }
     }
 }
